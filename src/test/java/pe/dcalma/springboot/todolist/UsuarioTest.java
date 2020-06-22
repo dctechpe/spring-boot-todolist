@@ -1,6 +1,6 @@
 package pe.dcalma.springboot.todolist;
 
-import pe.dcalma.springboot.todolist.model.IUsuarioDao;
+import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import pe.dcalma.springboot.todolist.model.Usuario;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ public class UsuarioTest {
     Logger logger = LoggerFactory.getLogger(UsuarioTest.class);
 
     @Autowired
-    private IUsuarioDao usuarioDao;
+    private UsuarioRepository usuarioDao;
 
     @Test
     public void crearUsuario() throws Exception {
