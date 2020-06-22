@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-
-
 @Controller
 public class LoginController {
 
@@ -32,6 +30,8 @@ public class LoginController {
         // Llamada al servicio para comprobar si el login es correcto
         LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
+        System.out.println("Login Status: " + loginStatus);
+
         if (loginStatus == LoginStatus.LOGIN_OK) {
             model.addAttribute("mensaje", "Hola " + loginData.geteMail() + "!!!");
             return "saludo";
@@ -45,3 +45,4 @@ public class LoginController {
         return "redirect:/login";
     }
 }
+
