@@ -80,7 +80,7 @@ public class UsuarioTest {
     @Transactional(readOnly = true)
     public void buscarUsuarioEnBaseDatos() throws Exception {
         // GIVEN
-        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+        // En el application.properties se cargan los datos de prueba del fichero datos-dev.sql
 
         // WHEN
 
@@ -96,7 +96,7 @@ public class UsuarioTest {
     @Transactional(readOnly = true)
     public void servicioLoginUsuario() throws Exception {
         // GIVEN
-        // Datos cargados de datos-test.sql
+        // Datos cargados de datos-dev.sql
 
         // WHEN
 
