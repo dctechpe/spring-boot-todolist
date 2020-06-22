@@ -67,4 +67,21 @@ public class UsuarioTest {
         assertThat(usuario.getFechaNacimiento()).isEqualTo(sdf.parse("1975-05-30"));
     }
 
+
+    @Test
+    @Transactional(readOnly = true)
+    public void buscarUsuarioEnBaseDatos() throws Exception {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+
+        Usuario usuario = usuarioDao.findById(1L).orElse(null);
+
+        // THEN
+        assertThat(usuario).isNotNull();
+        assertThat(usuario.getId()).isEqualTo(1L);
+        assertThat(usuario.getNombre()).isEqualTo("Darwin Calma");
+    }
+
 }
