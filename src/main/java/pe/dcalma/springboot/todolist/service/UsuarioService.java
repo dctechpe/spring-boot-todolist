@@ -29,4 +29,8 @@ public class UsuarioService {
             return LoginStatus.LOGIN_OK;
         }
     }
+
+    public void registrar(Usuario usuario) {
+        usuarioRepository.save(usuario);
+    }
 }
