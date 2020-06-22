@@ -8,6 +8,9 @@ import java.util.Date;
 @Entity
 @Table(name = "usuarios")
 public class Usuario {
+
+    public enum LoginStatus {LOGIN_OK, USER_NOT_FOUND, ERROR_PASSWORD}
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
