@@ -2,16 +2,21 @@ package pe.dcalma.springboot.todolist;
 
 import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import pe.dcalma.springboot.todolist.model.Usuario;
+import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
+import pe.dcalma.springboot.todolist.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,7 +27,10 @@ public class UsuarioTest {
     Logger logger = LoggerFactory.getLogger(UsuarioTest.class);
 
     @Autowired
-    private UsuarioRepository usuarioDao;
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private UsuarioService usuarioService;
 
     @Test
     public void crearUsuario() throws Exception {
@@ -56,7 +64,7 @@ public class UsuarioTest {
 
         // WHEN
 
-        usuarioDao.save(usuario);
+        usuarioRepository.save(usuario);
 
         // THEN
         assertThat(usuario.getId()).isNotNull();
@@ -76,12 +84,31 @@ public class UsuarioTest {
 
         // WHEN
 
-        Usuario usuario = usuarioDao.findById(1L).orElse(null);
+        Usuario usuario = usuarioRepository.findById(1L).orElse(null);
 
         // THEN
         assertThat(usuario).isNotNull();
         assertThat(usuario.getId()).isEqualTo(1L);
         assertThat(usuario.getNombre()).isEqualTo("Darwin Calma");
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    public void servicioLoginUsuario() throws Exception {
+        // GIVEN
+        // Datos cargados de datos-test.sql
+
+        // WHEN
+
+        LoginStatus loginStatusOK = usuarioService.login("dcalma@gmail.com", "12345678");
+        LoginStatus loginStatusErrorPassword = usuarioService.login("dcalma@gmail.com", "000");
+        LoginStatus loginStatusNoUsuario = usuarioService.login("pepito.perez@gmail.com", "12345678");
+
+        // THEN
+
+        assertThat(loginStatusOK).isEqualTo(LoginStatus.LOGIN_OK);
+        assertThat(loginStatusErrorPassword).isEqualTo(LoginStatus.ERROR_PASSWORD);
+        assertThat(loginStatusNoUsuario).isEqualTo(LoginStatus.USER_NOT_FOUND);
     }
 
 }
