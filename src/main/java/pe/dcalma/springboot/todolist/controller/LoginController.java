@@ -1,8 +1,8 @@
 package pe.dcalma.springboot.todolist.controller;
 
+import pe.dcalma.springboot.todolist.model.Usuario;
 import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Controller
 public class LoginController {
@@ -30,8 +31,6 @@ public class LoginController {
         // Llamada al servicio para comprobar si el login es correcto
         LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
-        System.out.println("Login Status: " + loginStatus);
-
         if (loginStatus == LoginStatus.LOGIN_OK) {
             model.addAttribute("mensaje", "Hola " + loginData.geteMail() + "!!!");
             return "saludo";
@@ -44,5 +43,29 @@ public class LoginController {
         }
         return "redirect:/login";
     }
+
+    @GetMapping("/registro")
+    public String registroForm(Model model) {
+        model.addAttribute("registroData", new RegistroData());
+        return "registroForm";
+    }
+
+    @PostMapping("/registro")
+    public String registroSubmit(@ModelAttribute RegistroData registroData, Model model, RedirectAttributes flash) {
+
+        if (usuarioService.findByEmail(registroData.geteMail()) != null) {
+            flash.addFlashAttribute("error", "El usuario " + registroData.geteMail() + " ya existe");
+            return "redirect:/registro";
+        }
+
+        Usuario usuario = new Usuario(registroData.geteMail());
+        usuario.setPassword(registroData.getPassword());
+        usuario.setFechaNacimiento(registroData.getFechaNacimiento());
+        usuario.setNombre(registroData.getNombre());
+
+        usuarioService.registrar(usuario);
+        return "redirect:/login";
+    }
+
 }
 
