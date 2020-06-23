@@ -28,6 +28,10 @@ public class TareaTest {
     @Autowired
     TareaRepository tareaRepository;
 
+    //
+    // Tests modelo Tarea
+    //
+
     @Test
     public void crearTarea() throws Exception {
         // GIVEN
@@ -58,6 +62,10 @@ public class TareaTest {
         assertThat(tarea1).isNotEqualTo(tarea3);
     }
 
+    //
+    // Tests TareaRepository
+    //
+
     @Test
     @Transactional
     public void crearTareaEnBaseDatos() {
@@ -65,7 +73,7 @@ public class TareaTest {
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
 
         Usuario usuario = usuarioRepository.findById(1L).orElse(null);
-        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de React");
 
         // WHEN
 
@@ -75,7 +83,7 @@ public class TareaTest {
 
         assertThat(tarea.getId()).isNotNull();
         assertThat(tarea.getUsuario()).isEqualTo(usuario);
-        assertThat(tarea.getTitulo()).isEqualTo("Práctica 1 de MADS");
+        assertThat(tarea.getTitulo()).isEqualTo("Práctica 1 de React");
     }
 
 
