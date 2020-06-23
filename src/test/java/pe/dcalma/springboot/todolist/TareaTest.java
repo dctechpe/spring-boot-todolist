@@ -81,7 +81,7 @@ public class TareaTest {
 
     @Test
     @Transactional
-    public void crearTareaEnBaseDatosConUsuarioNoBDLanzaExcepcion() {
+    public void salvarTareaEnBaseDatosConUsuarioNoBDLanzaExcepcion() {
         // GIVEN
         // Creamos un usuario sin ID y, por tanto, sin estar en gestionado
         // por JPA
