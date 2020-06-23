@@ -7,10 +7,12 @@ import pe.dcalma.springboot.todolist.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import javax.validation.Valid;
 
 
 @Controller
@@ -51,11 +53,16 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public String registroSubmit(@ModelAttribute RegistroData registroData, Model model, RedirectAttributes flash) {
+    public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model, RedirectAttributes flash) {
+
+        if (result.hasErrors()) {
+            return "registroForm";
+        }
 
         if (usuarioService.findByEmail(registroData.geteMail()) != null) {
-            flash.addFlashAttribute("error", "El usuario " + registroData.geteMail() + " ya existe");
-            return "redirect:/registro";
+            model.addAttribute("registroData", registroData);
+            model.addAttribute("error", "El usuario " + registroData.geteMail() + " ya existe");
+            return "registroForm";
         }
 
         Usuario usuario = new Usuario(registroData.geteMail());
@@ -68,4 +75,3 @@ public class LoginController {
     }
 
 }
-

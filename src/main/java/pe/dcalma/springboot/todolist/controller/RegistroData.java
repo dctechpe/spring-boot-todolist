@@ -3,8 +3,10 @@ package pe.dcalma.springboot.todolist.controller;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import javax.validation.constraints.Email;
 
 public class RegistroData {
+    @Email
     private String eMail;
     private String password;
     private String nombre;
