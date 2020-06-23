@@ -28,12 +28,27 @@ public class TareaTest {
 
         // WHEN
 
-        Tarea tarea = new Tarea(usuario, "Práctica 1 de MADS");
+        Tarea tarea = new Tarea(usuario, "Práctica 1 de React");
 
         // THEN
 
-        assertThat(tarea.getTitulo()).isEqualTo("Práctica 1 de MADS");
+        assertThat(tarea.getTitulo()).isEqualTo("Práctica 1 de React");
         assertThat(tarea.getUsuario()).isEqualTo(usuario);
+    }
+
+    @Test
+    public void comprobarIgualdadSinId() {
+        // GIVEN
+
+        Usuario usuario = new Usuario("dcalma@gmail.com");
+        Tarea tarea1 = new Tarea(usuario, "Práctica 1 de React");
+        Tarea tarea2 = new Tarea(usuario, "Práctica 1 de React");
+        Tarea tarea3 = new Tarea(usuario, "Pagar el servicios");
+
+        // THEN
+
+        assertThat(tarea1).isEqualTo(tarea2);
+        assertThat(tarea1).isNotEqualTo(tarea3);
     }
 }
 
