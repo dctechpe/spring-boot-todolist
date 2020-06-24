@@ -1,5 +1,6 @@
 package pe.dcalma.springboot.todolist.controller;
 
+import pe.dcalma.springboot.todolist.exception.TareaNotFoundException;
 import pe.dcalma.springboot.todolist.exception.UsuarioNotFoundException;
 import pe.dcalma.springboot.todolist.model.Tarea;
 import pe.dcalma.springboot.todolist.model.Usuario;
@@ -55,5 +56,23 @@ public class TareaController {
         model.addAttribute("tareas", tareas);
         return "listaTareas";
     }
+
+    @GetMapping("/tareas/{id}/editar")
+    public String formEditaTarea(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData, Model model) {
+        Tarea tarea = tareaService.findById(idTarea);
+        if (tarea == null) {
+            throw new TareaNotFoundException();
+        }
+        model.addAttribute("tarea", tarea);
+        tareaData.setTitulo(tarea.getTitulo());
+        return "formEditarTarea";
+    }
+
+    @PostMapping("/tareas/{id}/editar")
+    public String grabaTareaModificada(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData, Model model) {
+        Tarea tarea = tareaService.modificaTarea(idTarea, tareaData.getTitulo());
+        return "redirect:/usuarios/" + tarea.getUsuario().getId() + "/tareas";
+    }
 }
+
 
