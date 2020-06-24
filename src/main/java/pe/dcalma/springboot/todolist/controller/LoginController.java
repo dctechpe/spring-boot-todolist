@@ -1,7 +1,6 @@
 package pe.dcalma.springboot.todolist.controller;
 
 import pe.dcalma.springboot.todolist.model.Usuario;
-import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import javax.validation.Valid;
 
+import javax.validation.Valid;
 
 @Controller
 public class LoginController {
@@ -31,15 +30,15 @@ public class LoginController {
     public String loginSubmit(@ModelAttribute LoginData loginData, Model model, RedirectAttributes flash) {
 
         // Llamada al servicio para comprobar si el login es correcto
-        LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
+        UsuarioService.LoginStatus loginStatus = usuarioService.login(loginData.geteMail(), loginData.getPassword());
 
-        if (loginStatus == LoginStatus.LOGIN_OK) {
+        if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
             model.addAttribute("mensaje", "Hola " + loginData.geteMail() + "!!!");
             return "saludo";
-        } else if (loginStatus == LoginStatus.USER_NOT_FOUND) {
+        } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "loginForm";
-        } else if (loginStatus == LoginStatus.ERROR_PASSWORD) {
+        } else if (loginStatus == UsuarioService.LoginStatus.ERROR_PASSWORD) {
             model.addAttribute("error", "Contraseña incorrecta");
             return "loginForm";
         }
@@ -75,3 +74,4 @@ public class LoginController {
     }
 
 }
+

@@ -1,7 +1,6 @@
 package pe.dcalma.springboot.todolist.service;
 
 import pe.dcalma.springboot.todolist.model.Usuario;
-import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
 import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +15,12 @@ public class UsuarioService {
 
     Logger logger = LoggerFactory.getLogger(UsuarioService.class);
 
+    public enum LoginStatus {LOGIN_OK, USER_NOT_FOUND, ERROR_PASSWORD}
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Usuario.LoginStatus login(String eMail, String password) {
+    public LoginStatus login(String eMail, String password) {
 
         Optional<Usuario> usuario = usuarioRepository.findByEmail(eMail);
         if (!usuario.isPresent()) {

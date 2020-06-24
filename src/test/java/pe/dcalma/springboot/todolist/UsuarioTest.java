@@ -2,7 +2,6 @@ package pe.dcalma.springboot.todolist;
 
 import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import pe.dcalma.springboot.todolist.model.Usuario;
-import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -113,15 +112,15 @@ public class UsuarioTest {
 
         // WHEN
 
-        LoginStatus loginStatusOK = usuarioService.login("dcalma@gmail.com", "12345678");
-        LoginStatus loginStatusErrorPassword = usuarioService.login("dcalma@gmail.com", "000");
-        LoginStatus loginStatusNoUsuario = usuarioService.login("pepito.perez@gmail.com", "12345678");
+        UsuarioService.LoginStatus loginStatusOK = usuarioService.login("dcalma@gmail.com", "12345678");
+        UsuarioService.LoginStatus loginStatusErrorPassword = usuarioService.login("dcalma@gmail.com", "000");
+        UsuarioService.LoginStatus loginStatusNoUsuario = usuarioService.login("pepito.perez@gmail.com", "12345678");
 
         // THEN
 
-        assertThat(loginStatusOK).isEqualTo(LoginStatus.LOGIN_OK);
-        assertThat(loginStatusErrorPassword).isEqualTo(LoginStatus.ERROR_PASSWORD);
-        assertThat(loginStatusNoUsuario).isEqualTo(LoginStatus.USER_NOT_FOUND);
+        assertThat(loginStatusOK).isEqualTo(UsuarioService.LoginStatus.LOGIN_OK);
+        assertThat(loginStatusErrorPassword).isEqualTo(UsuarioService.LoginStatus.ERROR_PASSWORD);
+        assertThat(loginStatusNoUsuario).isEqualTo(UsuarioService.LoginStatus.USER_NOT_FOUND);
     }
 
     @Test

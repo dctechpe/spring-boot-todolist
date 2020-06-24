@@ -2,7 +2,6 @@ package pe.dcalma.springboot.todolist;
 
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pe.dcalma.springboot.todolist.controller.LoginController;
-import pe.dcalma.springboot.todolist.model.Usuario.LoginStatus;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
 
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ public class UsuarioWebTest {
     @Test
     public void servicioLoginUsuarioOK() throws Exception {
 
-        when(usuarioService.login("dcalma@gmail.com", "12345678")).thenReturn(LoginStatus.LOGIN_OK);
+        when(usuarioService.login("dcalma@gmail.com", "12345678")).thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
 
         this.mockMvc.perform(post("/login")
                 .param("eMail","dcalma@gmail.com")
@@ -46,7 +45,7 @@ public class UsuarioWebTest {
     @Test
     public void servicioLoginUsuarioNotFound() throws Exception {
 
-        when(usuarioService.login("pepito.perez@gmail.com", "12345678")).thenReturn(LoginStatus.USER_NOT_FOUND);
+        when(usuarioService.login("pepito.perez@gmail.com", "12345678")).thenReturn(UsuarioService.LoginStatus.USER_NOT_FOUND);
 
         this.mockMvc.perform(post("/login")
                 .param("eMail","pepito.perez@gmail.com")
@@ -58,7 +57,7 @@ public class UsuarioWebTest {
     @Test
     public void servicioLoginUsuarioErrorPassword() throws Exception {
 
-        when(usuarioService.login("dcalma@gmail.com", "000")).thenReturn(LoginStatus.ERROR_PASSWORD);
+        when(usuarioService.login("dcalma@gmail.com", "000")).thenReturn(UsuarioService.LoginStatus.ERROR_PASSWORD);
 
         this.mockMvc.perform(post("/login")
                 .param("eMail","dcalma@gmail.com")
