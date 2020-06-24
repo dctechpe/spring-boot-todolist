@@ -14,8 +14,6 @@ public class Usuario implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public enum LoginStatus {LOGIN_OK, USER_NOT_FOUND, ERROR_PASSWORD}
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -112,4 +110,3 @@ public class Usuario implements Serializable {
         return Objects.hash(email);
     }
 }
-
