@@ -3,6 +3,7 @@ package pe.dcalma.springboot.todolist;
 import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import pe.dcalma.springboot.todolist.model.Usuario;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
+import pe.dcalma.springboot.todolist.service.UsuarioServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.LoggerFactory;
@@ -147,7 +148,7 @@ public class UsuarioTest {
         // Pasamos como argumento un usario sin contraseña
         Usuario usuario =  new Usuario("usuario.prueba@gmail.com");
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(UsuarioServiceException.class, () -> {
             usuarioService.registrar(usuario);
         });
     }
