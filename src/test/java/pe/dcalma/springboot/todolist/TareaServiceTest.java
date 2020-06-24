@@ -45,11 +45,11 @@ public class TareaServiceTest {
         // GIVEN
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
 
-        Usuario usuario = new Usuario("ana.garcia@gmail.com");
+        Usuario usuario = new Usuario("dcalma@gmail.com");
         usuario.setId(1L);
 
-        Tarea lavarCoche = new Tarea(usuario, "Lavar coche");
-        lavarCoche.setId(1L);
+        Tarea renovarCE = new Tarea(usuario, "Renovar CE");
+        renovarCE .setId(1L);
 
         // WHEN
 
@@ -57,6 +57,21 @@ public class TareaServiceTest {
 
         // THEN
 
-        assertThat(tareas).contains(lavarCoche);
+        assertThat(tareas).contains(renovarCE);
+    }
+
+    @Test
+    public void testBuscarTarea() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+
+        Tarea renovarCE = tareaService.findById(2L);
+
+        // THEN
+
+        assertThat(renovarCE).isNotNull();
+        assertThat(renovarCE.getTitulo()).isEqualTo("Renovar CE");
     }
 }
