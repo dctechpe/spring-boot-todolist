@@ -90,4 +90,20 @@ public class TareaServiceTest {
         assertThat(tarea.getTitulo()).isEqualTo("Renovar CE");
         assertThat(tareaBD.getTitulo()).isEqualTo("Renovar CE");
     }
+
+    @Test
+    public void testBorrarTarea() {
+        // GIVEN
+
+        Tarea tarea = tareaService.nuevaTareaUsuario(1L, "Práctica 1 de React");
+
+        // WHEN
+
+        tareaService.borraTarea(tarea.getId());
+
+        // THEN
+
+        assertThat(tareaService.findById(tarea.getId())).isNull();
+
+    }
 }
