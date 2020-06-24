@@ -27,9 +27,6 @@ public class UsuarioTest {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private UsuarioService usuarioService;
-
     @Test
     public void crearUsuario() throws Exception {
 
@@ -104,105 +101,6 @@ public class UsuarioTest {
         assertThat(usuario.getNombre()).isEqualTo("Darwin Calma");
     }
 
-
-    @Test
-    @Transactional(readOnly = true)
-    public void servicioLoginUsuario() {
-        // GIVEN
-        // Datos cargados de datos-test.sql
-
-        // WHEN
-
-        UsuarioService.LoginStatus loginStatusOK = usuarioService.login("dcalma@gmail.com", "12345678");
-        UsuarioService.LoginStatus loginStatusErrorPassword = usuarioService.login("dcalma@gmail.com", "000");
-        UsuarioService.LoginStatus loginStatusNoUsuario = usuarioService.login("pepito.perez@gmail.com", "12345678");
-
-        // THEN
-
-        assertThat(loginStatusOK).isEqualTo(UsuarioService.LoginStatus.LOGIN_OK);
-        assertThat(loginStatusErrorPassword).isEqualTo(UsuarioService.LoginStatus.ERROR_PASSWORD);
-        assertThat(loginStatusNoUsuario).isEqualTo(UsuarioService.LoginStatus.USER_NOT_FOUND);
-    }
-
-    @Test
-    @Transactional
-    public void servicioRegistroUsuario() {
-        // GIVEN
-
-        Usuario usuario = new Usuario("usuario.prueba@gmail.com");
-        usuario.setPassword("12345678");
-
-        // WHEN
-
-        usuarioService.registrar(usuario);
-
-        // THEN
-
-        Usuario usuarioBaseDatos = usuarioRepository.findByEmail("usuario.prueba@gmail.com").orElse(null);
-        assertThat(usuarioBaseDatos).isNotNull();
-        assertThat(usuarioBaseDatos.getPassword()).isEqualTo(usuario.getPassword());
-    }
-
-    @Test
-    public void servicioRegistroUsuarioExcepcionConNullPassword() {
-        // Pasamos como argumento un usario sin contraseña
-        Usuario usuario =  new Usuario("usuario.prueba@gmail.com");
-
-        assertThrows(UsuarioServiceException.class, () -> {
-            usuarioService.registrar(usuario);
-        });
-    }
-
-
-    @Test
-    public void servicioRegistroUsuarioExcepcionConEmailRepetido() {
-        // GIVEN
-        // Datos cargados de datos-test.sql
-
-        // WHEN
-        // Pasamos como argumento un usario con emaii existente en datos-test.sql
-        Usuario usuario =  new Usuario("dcalma@gmail.com");
-        usuario.setPassword("12345678");
-
-        assertThrows(IllegalArgumentException.class, () -> {
-            usuarioService.registrar(usuario);
-        });
-        // THEN
-        // Se produce una excepción comprobada con el expected del test
-    }
-
-    @Test
-    @Transactional
-    public void servicioRegistroUsuarioDevuelveUsuarioConId() {
-        // GIVEN
-
-        Usuario usuario = new Usuario("usuario.prueba@gmail.com");
-        usuario.setPassword("12345678");
-
-        // WHEN
-
-        usuario = usuarioService.registrar(usuario);
-
-        // THEN
-
-        assertThat(usuario.getId()).isNotNull();
-    }
-
-    @Test
-    @Transactional(readOnly = true)
-    public void servicioConsultaUsuarioDevuelveUsuario() {
-        // GIVEN
-        // Datos cargados de datos-test.sql
-
-        // WHEN
-
-        Usuario usuario = usuarioService.findByEmail("dcalma@gmail.com");
-
-        // THEN
-
-        assertThat(usuario.getId()).isEqualTo(1L);
-    }
-
     @Test
     public void comprobarIgualdadSinId() {
         // GIVEN
@@ -234,4 +132,5 @@ public class UsuarioTest {
         assertThat(usuario1).isEqualTo(usuario2);
         assertThat(usuario1).isNotEqualTo(usuario3);
     }
+
 }
