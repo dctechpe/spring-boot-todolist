@@ -3,7 +3,7 @@ package pe.dcalma.springboot.todolist;
 import pe.dcalma.springboot.todolist.controller.TareaController;
 import pe.dcalma.springboot.todolist.model.Usuario;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
-
+import pe.dcalma.springboot.todolist.service.TareaService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -30,6 +30,9 @@ public class TareaWebTest {
     @MockBean
     private UsuarioService usuarioService;
 
+    @MockBean
+    private TareaService tareaService;
+    
     @Test
     public void tareaControllerDevuelveForm() throws Exception {
         Usuario usuario = new Usuario("dcalma@gmail.com");
