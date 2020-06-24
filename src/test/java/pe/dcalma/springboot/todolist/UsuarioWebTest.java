@@ -52,8 +52,7 @@ public class UsuarioWebTest {
                 .param("eMail","pepito.perez@gmail.com")
                 .param("password","12345678"))
                 .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(flash().attribute("error", "No existe usuario"));
+                .andExpect(content().string(containsString("No existe usuario")));
     }
 
     @Test
@@ -65,8 +64,7 @@ public class UsuarioWebTest {
                 .param("eMail","dcalma@gmail.com")
                 .param("password","000"))
                 .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(flash().attribute("error", "Contraseña incorrecta"));
+                .andExpect(content().string(containsString("Contraseña incorrecta")));
     }
 
     @Test
