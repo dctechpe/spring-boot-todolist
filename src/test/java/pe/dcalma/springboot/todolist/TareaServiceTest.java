@@ -74,4 +74,20 @@ public class TareaServiceTest {
         assertThat(renovarCE).isNotNull();
         assertThat(renovarCE.getTitulo()).isEqualTo("Renovar CE");
     }
+
+    @Test
+    public void testModificarTarea() {
+        // GIVEN
+        // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
+
+        // WHEN
+
+        Tarea tarea = tareaService.modificaTarea(2L, "Renovar CE");
+        Tarea tareaBD = tareaService.findById(2L);
+
+        // THEN
+
+        assertThat(tarea.getTitulo()).isEqualTo("Renovar CE");
+        assertThat(tareaBD.getTitulo()).isEqualTo("Renovar CE");
+    }
 }
