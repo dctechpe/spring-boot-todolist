@@ -3,6 +3,7 @@ package pe.dcalma.springboot.todolist.controller;
 import pe.dcalma.springboot.todolist.model.Usuario;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
 
+import pe.dcalma.springboot.todolist.authentication.ManagerUserSesion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +22,9 @@ public class LoginController {
     @Autowired
     UsuarioService usuarioService;
 
+    @Autowired
+    ManagerUserSesion managerUserSesion;
+
     @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("loginData", new LoginData());
@@ -36,14 +40,9 @@ public class LoginController {
         if (loginStatus == UsuarioService.LoginStatus.LOGIN_OK) {
             Usuario usuario = usuarioService.findByEmail(loginData.geteMail());
 
-            // Añadimos el id de usuario en la sesión HTTP para hacer
-            // una autorización sencilla. En los métodos de controllers
-            // comprobamos si el id del usuario logeado coincide con el obtenido
-            // desde la URL
-            session.setAttribute("idUsuarioLogeado", usuario.getId());
+            managerUserSesion.logearUsuario(session, usuario.getId());
 
             return "redirect:/usuarios/" + usuario.getId() + "/tareas";
-
         } else if (loginStatus == UsuarioService.LoginStatus.USER_NOT_FOUND) {
             model.addAttribute("error", "No existe usuario");
             return "formLogin";
@@ -88,3 +87,4 @@ public class LoginController {
         return "redirect:/login";
     }
 }
+
