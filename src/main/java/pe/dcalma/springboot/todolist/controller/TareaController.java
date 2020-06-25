@@ -114,6 +114,8 @@ public class TareaController {
 
     @DeleteMapping("/tareas/{id}")
     @ResponseBody
+    // La anotación @ResponseBody sirve para que la cadena devuelta sea la resupuesta
+    // de la petición HTTP, en lugar de una plantilla thymeleaf
     public String borrarTarea(@PathVariable(value="id") Long idTarea, RedirectAttributes flash, HttpSession session) {
         Tarea tarea = tareaService.findById(idTarea);
         if (tarea == null) {
@@ -123,7 +125,6 @@ public class TareaController {
         managerUserSesion.comprobarUsuarioLogeado(session, tarea.getUsuario().getId());
 
         tareaService.borraTarea(idTarea);
-        flash.addFlashAttribute("mensaje", "Tarea borrada correctamente");
         return "";
     }
 }
