@@ -1,5 +1,7 @@
 package pe.dcalma.springboot.todolist;
 
+import pe.dcalma.springboot.todolist.authentication.ManagerUserSesion;
+import pe.dcalma.springboot.todolist.model.Usuario;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pe.dcalma.springboot.todolist.controller.LoginController;
 import pe.dcalma.springboot.todolist.service.UsuarioService;
@@ -27,19 +29,31 @@ public class UsuarioWebTest {
     private MockMvc mockMvc;
 
     @MockBean
+    private ManagerUserSesion managerUserSesion;
+
+    @MockBean
     private UsuarioService usuarioService;
 
     @Test
     public void servicioLoginUsuarioOK() throws Exception {
 
+        Usuario anaGarcia = new Usuario("dcalma@gmail.com");
+        anaGarcia.setId(1L);
+
         when(usuarioService.login("dcalma@gmail.com", "12345678")).thenReturn(UsuarioService.LoginStatus.LOGIN_OK);
 
+        when(usuarioService.findByEmail("dcalma@gmail.com")).thenReturn(anaGarcia);
+
+
         this.mockMvc.perform(post("/login")
-                .param("eMail","dcalma@gmail.com")
-                .param("password","12345678"))
+                .param("eMail", "dcalma@gmail.com")
+                .param("password", "12345678"))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("Hola dcalma@gmail.com!!!")));
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/usuarios/1/tareas"));
+
+
+
     }
 
     @Test

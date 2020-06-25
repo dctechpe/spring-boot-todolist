@@ -1,5 +1,6 @@
 package pe.dcalma.springboot.todolist;
 
+import pe.dcalma.springboot.todolist.authentication.ManagerUserSesion;
 import pe.dcalma.springboot.todolist.controller.TareaController;
 import pe.dcalma.springboot.todolist.model.Tarea;
 import pe.dcalma.springboot.todolist.model.Usuario;
@@ -14,11 +15,15 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
+
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TareaController.class)
@@ -32,6 +37,9 @@ public class TareaWebTest {
 
     @MockBean
     private TareaService tareaService;
+
+    @MockBean
+    private ManagerUserSesion managerUserSesion;
     
     @Test
     public void nuevaTareaDevuelveForm() throws Exception {
