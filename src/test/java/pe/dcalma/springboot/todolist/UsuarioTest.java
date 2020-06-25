@@ -2,8 +2,6 @@ package pe.dcalma.springboot.todolist;
 
 import pe.dcalma.springboot.todolist.model.UsuarioRepository;
 import pe.dcalma.springboot.todolist.model.Usuario;
-import pe.dcalma.springboot.todolist.service.UsuarioService;
-import pe.dcalma.springboot.todolist.service.UsuarioServiceException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.LoggerFactory;
@@ -16,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.SimpleDateFormat;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
