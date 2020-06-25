@@ -52,10 +52,10 @@ public class LoginController {
     }
 
     @PostMapping("/registro")
-    public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model, RedirectAttributes flash) {
+    public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "formRegistro";
+            return "registroForm";
         }
 
         if (usuarioService.findByEmail(registroData.geteMail()) != null) {
@@ -74,3 +74,4 @@ public class LoginController {
     }
 
 }
+
