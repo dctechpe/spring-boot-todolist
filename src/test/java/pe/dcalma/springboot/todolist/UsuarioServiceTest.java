@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +26,7 @@ public class UsuarioServiceTest {
     private UsuarioService usuarioService;
 
     @Test
+    @Transactional(readOnly = true)
     public void servicioLoginUsuario() {
         // GIVEN
         // Datos cargados de datos-test.sql
@@ -43,6 +45,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    @Transactional
     public void servicioRegistroUsuario() {
         // GIVEN
 
@@ -61,6 +64,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    @Transactional
     public void servicioRegistroUsuarioExcepcionConNullPassword() {
         // Pasamos como argumento un usario sin contraseña
         Usuario usuario =  new Usuario("usuario.prueba@gmail.com");
@@ -73,6 +77,7 @@ public class UsuarioServiceTest {
 
 
     @Test
+    @Transactional
     public void servicioRegistroUsuarioExcepcionConEmailRepetido() {
         // GIVEN
         // Datos cargados de datos-test.sql
@@ -91,6 +96,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    @Transactional
     public void servicioRegistroUsuarioDevuelveUsuarioConId() {
         // GIVEN
 
@@ -107,6 +113,7 @@ public class UsuarioServiceTest {
     }
 
     @Test
+    @Transactional(readOnly = true)
     public void servicioConsultaUsuarioDevuelveUsuario() {
         // GIVEN
         // Datos cargados de datos-test.sql
