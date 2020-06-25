@@ -63,7 +63,7 @@ public class LoginController {
     public String registroSubmit(@Valid RegistroData registroData, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
-            return "registroForm";
+            return "formRegistro";
         }
 
         if (usuarioService.findByEmail(registroData.geteMail()) != null) {
@@ -87,4 +87,3 @@ public class LoginController {
         return "redirect:/login";
     }
 }
-
