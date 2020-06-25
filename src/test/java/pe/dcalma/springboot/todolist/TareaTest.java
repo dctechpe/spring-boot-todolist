@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -105,6 +106,7 @@ public class TareaTest {
         // Se lanza una excepción (capturada en el test)
     }
 
+
     @Test
     @Transactional(readOnly = true)
     public void unUsuarioTieneUnaListaDeTareas() {
@@ -114,7 +116,7 @@ public class TareaTest {
         Usuario usuario = usuarioRepository.findById(1L).orElse(null);
 
         // WHEN
-        List<Tarea> tareas = usuario.getTareas();
+        Set<Tarea> tareas = usuario.getTareas();
 
         // THEN
 
@@ -131,7 +133,7 @@ public class TareaTest {
 
         // WHEN
 
-        List<Tarea> tareas = usuario.getTareas();
+        Set<Tarea> tareas = usuario.getTareas();
         Tarea tarea = new Tarea(usuario, "Práctica 1 de React");
         tareaRepository.save(tarea);
 
