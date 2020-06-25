@@ -1,5 +1,7 @@
 package pe.dcalma.springboot.todolist.controller;
 
+
+import pe.dcalma.springboot.todolist.exception.UsuarioNoLogeadoException;
 import pe.dcalma.springboot.todolist.exception.TareaNotFoundException;
 import pe.dcalma.springboot.todolist.exception.UsuarioNotFoundException;
 import pe.dcalma.springboot.todolist.model.Tarea;
@@ -29,7 +31,12 @@ public class TareaController {
     TareaService tareaService;
 
     @GetMapping("/usuarios/{id}/tareas/nueva")
-    public String formNuevaTarea(@PathVariable(value="id") Long idUsuario, @ModelAttribute TareaData tareaData, Model model) {
+    public String formNuevaTarea(@PathVariable(value="id") Long idUsuario,
+                                 @ModelAttribute TareaData tareaData, Model model,
+                                 HttpSession session) {
+
+        comprobarUsuarioLogeado(session, idUsuario);
+
         Usuario usuario = usuarioService.findById(idUsuario);
         if (usuario == null) {
             throw new UsuarioNotFoundException();
@@ -39,7 +46,12 @@ public class TareaController {
     }
 
     @PostMapping("/usuarios/{id}/tareas/nueva")
-    public String nuevaTarea(@PathVariable(value="id") Long idUsuario, @ModelAttribute TareaData tareaData, Model model, RedirectAttributes flash) {
+    public String nuevaTarea(@PathVariable(value="id") Long idUsuario, @ModelAttribute TareaData tareaData,
+                             Model model, RedirectAttributes flash,
+                             HttpSession session) {
+
+        comprobarUsuarioLogeado(session, idUsuario);
+
         Usuario usuario = usuarioService.findById(idUsuario);
         if (usuario == null) {
             throw new UsuarioNotFoundException();
@@ -52,7 +64,7 @@ public class TareaController {
     @GetMapping("/usuarios/{id}/tareas")
     public String listadoTareas(@PathVariable(value="id") Long idUsuario, Model model, HttpSession session) {
 
-        comprobarUsuarioLogeado(session);
+        comprobarUsuarioLogeado(session, idUsuario);
 
         Usuario usuario = usuarioService.findById(idUsuario);
         if (usuario == null) {
@@ -65,39 +77,55 @@ public class TareaController {
     }
 
     @GetMapping("/tareas/{id}/editar")
-    public String formEditaTarea(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData, Model model) {
+    public String formEditaTarea(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData,
+                                 Model model, HttpSession session) {
+
         Tarea tarea = tareaService.findById(idTarea);
         if (tarea == null) {
             throw new TareaNotFoundException();
         }
+
+        comprobarUsuarioLogeado(session, tarea.getUsuario().getId());
+
         model.addAttribute("tarea", tarea);
         tareaData.setTitulo(tarea.getTitulo());
         return "formEditarTarea";
     }
 
     @PostMapping("/tareas/{id}/editar")
-    public String grabaTareaModificada(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData, Model model, RedirectAttributes flash) {
-        Tarea tarea = tareaService.modificaTarea(idTarea, tareaData.getTitulo());
+    public String grabaTareaModificada(@PathVariable(value="id") Long idTarea, @ModelAttribute TareaData tareaData,
+                                       Model model, RedirectAttributes flash, HttpSession session) {
+        Tarea tarea = tareaService.findById(idTarea);
+        if (tarea == null) {
+            throw new TareaNotFoundException();
+        }
+
+        comprobarUsuarioLogeado(session, tarea.getUsuario().getId());
+
+        tareaService.modificaTarea(idTarea, tareaData.getTitulo());
         flash.addFlashAttribute("mensaje", "Tarea modificada correctamente");
         return "redirect:/usuarios/" + tarea.getUsuario().getId() + "/tareas";
     }
 
     @DeleteMapping("/tareas/{id}")
     @ResponseBody
-    public String borrarTarea(@PathVariable(value="id") Long idTarea, RedirectAttributes flash) {
+    public String borrarTarea(@PathVariable(value="id") Long idTarea, RedirectAttributes flash, HttpSession session) {
         Tarea tarea = tareaService.findById(idTarea);
         if (tarea == null) {
             throw new TareaNotFoundException();
         }
+
+        comprobarUsuarioLogeado(session, tarea.getUsuario().getId());
+
         tareaService.borraTarea(idTarea);
         flash.addFlashAttribute("mensaje", "Tarea borrada correctamente");
         return "";
     }
 
-    private void comprobarUsuarioLogeado(HttpSession session) {
+    private void comprobarUsuarioLogeado(HttpSession session, Long idUsuario) {
         Long idUsuarioLogeado = (Long) session.getAttribute("idUsuarioLogeado");
-        System.out.println("Usuario logeado: " + idUsuarioLogeado);
+        if (!idUsuario.equals(idUsuarioLogeado))
+            throw new UsuarioNoLogeadoException();
     }
 }
-
 
