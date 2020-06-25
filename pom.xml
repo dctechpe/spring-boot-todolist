@@ -10,7 +10,7 @@
     </parent>
     <groupId>pe.dcalma</groupId>
     <artifactId>spring-boot-todolist</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
     <name>spring-boot-todolist</name>
     <description>Spring Boot Todo List App</description>
 
