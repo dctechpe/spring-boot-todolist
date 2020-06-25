@@ -55,12 +55,30 @@ public class TareaTest {
         Usuario usuario = new Usuario("dcalma@gmail.com");
         Tarea tarea1 = new Tarea(usuario, "Práctica 1 de React");
         Tarea tarea2 = new Tarea(usuario, "Práctica 1 de React");
-        Tarea tarea3 = new Tarea(usuario, "Pagar el servicios");
+        Tarea tarea3 = new Tarea(usuario, "Pagar servicios");
 
         // THEN
 
         assertThat(tarea1).isEqualTo(tarea2);
         assertThat(tarea1).isNotEqualTo(tarea3);
+    }
+
+    @Test
+    public void comprobarIgualdadConId() {
+        // GIVEN
+
+        Usuario usuario = new Usuario("dcalma@gmail.com");
+        Tarea tarea1 = new Tarea(usuario, "Práctica 1 de React");
+        Tarea tarea2 = new Tarea(usuario, "Práctica 1 de React");
+        Tarea tarea3 = new Tarea(usuario, "Pagar servicios");
+        tarea1.setId(1L);
+        tarea2.setId(2L);
+        tarea3.setId(1L);
+
+        // THEN
+
+        assertThat(tarea1).isEqualTo(tarea3);
+        assertThat(tarea1).isNotEqualTo(tarea2);
     }
 
     //
