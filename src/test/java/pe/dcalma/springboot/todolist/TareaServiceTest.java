@@ -43,7 +43,6 @@ public class TareaServiceTest {
     }
 
     @Test
-    @Transactional(readOnly = true)
     public void testListadoTareas() {
         // GIVEN
         // En el application.properties se cargan los datos de prueba del fichero datos-test.sql
